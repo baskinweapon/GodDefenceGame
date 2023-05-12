@@ -1,3 +1,4 @@
+using System;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -15,7 +16,11 @@ public class Health : MonoBehaviour {
     public float GetCurrentHealth() => curHealth;
     public float GetCurrentHpPercent() => Mathf.InverseLerp(0, maxHealth, curHealth);
     public float GetMaxHealth() => maxHealth;
-    
+
+    private void OnEnable() {
+        curHealth = maxHealth;
+    }
+
     public void Damage(float value) {
         if (curHealth == 0) return;
         curHealth -= value;

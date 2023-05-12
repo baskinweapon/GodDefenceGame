@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,21 +25,33 @@ namespace Enemies {
         protected virtual void OnDamage(float damage) {
             animator.SetTrigger("Damage");
         }
-        
+
+        private bool death;
         protected virtual void OnDeath() {
-            ZombieSpawner.instance.DeleteEnemy(this.transform);
+            ZombieSpawner.OnDeleteEnemy(this.transform);
             animator.SetBool("Attack", false);
             animator.SetTrigger("Death");
+            death = true;
             Invoke(nameof(Disable), 2f);
         }
 
         public void Disable() {
             gameObject.SetActive(false);
         }
+        
         protected virtual void OnCollisionEnter(Collision collision) {
             if (collision.gameObject.CompareTag("Pyramid")) {
-                ZombieSpawner.instance.DeleteEnemy(this.transform);
+                ZombieSpawner.OnDeleteEnemy(this.transform);
                 animator.SetBool("Attack", true);
+                StartCoroutine(AttackDammage());
+            }
+        }
+
+        private WaitForSeconds _wait = new WaitForSeconds(1);
+        IEnumerator AttackDammage() {
+            while (!death) {
+                GameMain.instance.PassPyramidDamage(1);
+                yield return _wait;
             }
         }
 

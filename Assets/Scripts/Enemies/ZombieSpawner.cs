@@ -9,7 +9,10 @@ using Random = UnityEngine.Random;
 
 namespace Enemies {
     [RequireComponent(typeof(ObjectPool))]
-    public class ZombieSpawner : Singleton<ZombieSpawner> {
+    public class ZombieSpawner : MonoBehaviour {
+        public static Action<Transform> OnDeleteEnemy;
+        public static Action OnKillAll;
+
         public Vector3 pyramidPosition;
         public Vector2 zoneRange;
         public float speed;
@@ -28,7 +31,9 @@ namespace Enemies {
             for (int i = 0; i < startValue; i++) {
                 CreateEnemy();
             }
-            
+
+            OnDeleteEnemy += DeleteEnemy;
+            OnKillAll += KillAll;
             InvokeRepeating(nameof(CreateEnemy), 0f, 0.5f);
         }
 
@@ -41,6 +46,17 @@ namespace Enemies {
             var sign_2 = Random.value < .5? 1 : -1;
             _zombies[^1].position = new Vector3(sign_1 * Random.Range(zoneRange.x, zoneRange.y), 0, sign_2 * Random.Range(zoneRange.x, zoneRange.y));  
             _zombies[^1].rotation = Quaternion.LookRotation(pyramidPosition - _zombies[^1].position);
+            
+            _transformAccessArray.Dispose();
+            _transformAccessArray = new TransformAccessArray(_zombies.ToArray());
+        }
+
+        public void KillAll() {
+            foreach (var zombie in _zombies) {
+                zombie.gameObject.SetActive(false);
+            }
+            
+            _zombies.Clear();
             
             _transformAccessArray.Dispose();
             _transformAccessArray = new TransformAccessArray(_zombies.ToArray());
@@ -75,6 +91,8 @@ namespace Enemies {
         
         private void OnDestroy() {
             _transformAccessArray.Dispose();
+            OnDeleteEnemy -= DeleteEnemy;
+            OnKillAll -= KillAll;
         }
     }
 }

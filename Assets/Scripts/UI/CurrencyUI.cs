@@ -4,7 +4,7 @@ using UnityEngine;
 public class CurrencyUI : MonoBehaviour {
     public TextMeshProUGUI text;
     
-    private void Start() {
+    private void Awake() {
         GameMain.instance.OnChangeCurrency += ShowCurrency;
     }
 
