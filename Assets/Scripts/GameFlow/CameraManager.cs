@@ -26,7 +26,6 @@ public class CameraManager : Singleton<CameraManager>
         _camera.GetCinemachineComponent<CinemachineTrackedDolly>().m_PathPosition = 3;
         yield return new WaitForSeconds(2f);
         UIManager.instance.tutor.gameObject.SetActive(false);
-        ZombieSpawner.OnKillAll();
     }
     
     public void ShakeCamera() {

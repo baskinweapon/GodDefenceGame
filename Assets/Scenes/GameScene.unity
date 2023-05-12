@@ -268,9 +268,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pyramidPosition: {x: 0, y: 0, z: 0}
-  zoneRange: {x: 10, y: 20}
+  zoneRange: {x: 20, y: 40}
   speed: 1
-  startValue: 10
+  startValue: 20
 --- !u!1 &698898481
 GameObject:
   m_ObjectHideFlags: 0
