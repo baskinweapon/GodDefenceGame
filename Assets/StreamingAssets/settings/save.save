@@ -1,0 +1,15 @@
+{
+    "data": {
+        "camera": {
+            "cameraSpeed": 0.0
+        },
+        "player": {
+            "maxHP": 100,
+            "currentHP": 100,
+            "currency": 0
+        },
+        "enemyStatictics": {
+            "sizeOfEnemyKilled": 0
+        }
+    }
+}

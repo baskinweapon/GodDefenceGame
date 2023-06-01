@@ -5,13 +5,13 @@ using UnityEngine.Jobs;
 
 namespace Enemies {
     public struct ZombieJob : IJobParallelForTransform {
-        public float _speed;
+        public NativeArray<float> _speed;
         public float _deltaTime;
 
         public NativeArray<Vector3> directions;
 
         public void Execute(int index, TransformAccess transform) {
-            transform.position += directions[index] * _speed * _deltaTime;
+            transform.position += directions[index] * _speed[index] * _deltaTime;
         }
     }
 }

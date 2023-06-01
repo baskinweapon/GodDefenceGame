@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -5,7 +6,7 @@ public class CurrencyUI : MonoBehaviour {
     public TextMeshProUGUI text;
     
     private void Awake() {
-        GameMain.instance.OnChangeCurrency += ShowCurrency;
+        GameManager.instance.currencySystem.GetCurrencySystem().OnCurrencyChange += ShowCurrency;
     }
 
     private void ShowCurrency(int value) {
@@ -13,6 +14,6 @@ public class CurrencyUI : MonoBehaviour {
     }
 
     private void OnDisable() {
-        GameMain.instance.OnChangeCurrency -= ShowCurrency;
+        GameManager.instance.currencySystem.GetCurrencySystem().OnCurrencyChange -= ShowCurrency;
     }
 }

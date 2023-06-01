@@ -1,32 +1,44 @@
+using System;
+using System.Collections;
+using Enemies;
 using UnityEngine;
 
 public class TapDamageMechanic: MonoBehaviour {
     public ParticleSystem tapEffect;
-    public float damagePower = 1f;
+    public int damagePower = 1;
     
-    private void OnEnable() {
-        InputSystem.OnFire += OnFire;
+    private void Start() {
+        GameManager.instance.inputSystem.GetInputSystem().OnFire += OnFire;
     }
     
     private void OnFire() {
-        var ray = Camera.main.ScreenPointToRay(InputSystem.instance.GetMousePosition());
-        if (!Physics.Raycast(ray, out var hit)) return;
-        if (!hit.collider.CompareTag("Enemy")) return;
-        var enemy = hit.collider.GetComponent<Health>();
-        if (enemy != null) {
-            enemy.Damage(damagePower);
-            PlayEffect(enemy.transform.position);
+        StartCoroutine(HoldProcess());
+    }
+    
+    private IEnumerator HoldProcess() {
+        var inputSystem = GameManager.instance.inputSystem;
+        
+        while (inputSystem.GetInputSystem().playerInput.Player.Fire.IsPressed()) {
+            var ray = GameManager.instance.cameraSystem.GetCamera().ScreenPointToRay(inputSystem.GetMousePosition());
+            if (!Physics.Raycast(ray, out var hit)) yield break;
+            if (!hit.collider.CompareTag("Enemy")) yield break;
+            var enemy = hit.collider.GetComponent<BaseEnemy>();
+            if (enemy != null) {
+                enemy.Damage(damagePower);
+                PlayEffect(enemy.transform.position);
+            }
+            yield return new WaitForSeconds(0.5f);
         }
     }
 
     private void PlayEffect(Vector3 point) {
-        CameraManager.instance.ShakeCamera();
+        GameManager.instance.cameraSystem.ShakeCamera(0.1f, 1);
         var effect = Instantiate(tapEffect, transform);
         effect.transform.position = point;
         effect.Play();
     }
 
     private void OnDisable() {
-        InputSystem.OnFire -= OnFire;
+        GameManager.instance.inputSystem.GetInputSystem().OnFire -= OnFire;
     }
 }
