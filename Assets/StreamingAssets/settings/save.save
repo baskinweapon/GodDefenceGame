@@ -5,11 +5,11 @@
         },
         "player": {
             "maxHP": 100,
-            "currentHP": 100,
-            "currency": 0
+            "currentHP": 54,
+            "currency": 240
         },
         "enemyStatictics": {
-            "sizeOfEnemyKilled": 0
+            "sizeOfEnemyKilled": 23
         }
     }
 }

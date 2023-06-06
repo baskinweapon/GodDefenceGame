@@ -19,8 +19,4 @@ public class GameFlowManager: IGameFlowControl {
         timeScale = speed;
         Time.timeScale = speed;
     }
-
-    public GameFlowManager GetGameFlowManager() {
-        return this;
-    }
 }

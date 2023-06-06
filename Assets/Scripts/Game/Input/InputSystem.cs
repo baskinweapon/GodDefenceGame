@@ -5,8 +5,8 @@ using UnityEngine.InputSystem;
 public class InputSystem : IInputSystem {
     public InputActions playerInput;
 
-    public Action OnFire;
-    public Action OnRightClick;
+    public Action OnFire { get; set; }
+    public Action OnRightClick { get; set; }
     
     public InputSystem() {
         
@@ -32,6 +32,10 @@ public class InputSystem : IInputSystem {
 
     public Vector2 GetMoveVector() {
         return playerInput.Player.Move.ReadValue<Vector2>();;
+    }
+
+    public bool IsPressed() {
+        return playerInput.Player.Fire.IsPressed();
     }
 
     public Vector2 GetMousePosition() {

@@ -15,8 +15,7 @@ public class GameManager : Singleton<GameManager> {
     }
 
     private void Start() {
-        var currency = currencySystem.GetCurrencySystem();
-        currency.OnCurrencyChange.Invoke(currencySystem.GetCurrency());
+        currencySystem.OnCurrencyChange.Invoke(currencySystem.GetCurrency());
         StartNewGame();
         gameFlowControl.Pause();
     }
@@ -66,10 +65,6 @@ public class GameManager : Singleton<GameManager> {
     
     private void OnApplicationQuit() {
         saveSystem.Save();
-    }
-
-    private void OnDestroy() {
-        inputSystem.GetInputSystem().OnDestroy();
     }
 }
 

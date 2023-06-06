@@ -2,7 +2,7 @@ using System;
 
 public class CurrencySystem: ICurrencySystem {
     private int currency;
-    public Action<int> OnCurrencyChange;
+    public Action<int> OnCurrencyChange { get; set; }
     
     public CurrencySystem() {
         currency = GameManager.instance.saveSystem.GetGameSettings().data.player.currency;

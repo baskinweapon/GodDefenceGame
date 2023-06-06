@@ -8,7 +8,7 @@ public class TapDamageMechanic: MonoBehaviour {
     public int damagePower = 1;
     
     private void Start() {
-        GameManager.instance.inputSystem.GetInputSystem().OnFire += OnFire;
+        GameManager.instance.inputSystem.OnFire += OnFire;
     }
     
     private void OnFire() {
@@ -18,7 +18,7 @@ public class TapDamageMechanic: MonoBehaviour {
     private IEnumerator HoldProcess() {
         var inputSystem = GameManager.instance.inputSystem;
         
-        while (inputSystem.GetInputSystem().playerInput.Player.Fire.IsPressed()) {
+        while (inputSystem.IsPressed()) {
             var ray = GameManager.instance.cameraSystem.GetCamera().ScreenPointToRay(inputSystem.GetMousePosition());
             if (!Physics.Raycast(ray, out var hit)) yield break;
             if (!hit.collider.CompareTag("Enemy")) yield break;
@@ -39,6 +39,6 @@ public class TapDamageMechanic: MonoBehaviour {
     }
 
     private void OnDisable() {
-        GameManager.instance.inputSystem.GetInputSystem().OnFire -= OnFire;
+        GameManager.instance.inputSystem.OnFire -= OnFire;
     }
 }

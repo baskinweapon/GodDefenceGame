@@ -6,7 +6,7 @@ public class CurrencyUI : MonoBehaviour {
     public TextMeshProUGUI text;
     
     private void Awake() {
-        GameManager.instance.currencySystem.GetCurrencySystem().OnCurrencyChange += ShowCurrency;
+        GameManager.instance.currencySystem.OnCurrencyChange += ShowCurrency;
     }
 
     private void ShowCurrency(int value) {
@@ -14,6 +14,6 @@ public class CurrencyUI : MonoBehaviour {
     }
 
     private void OnDisable() {
-        GameManager.instance.currencySystem.GetCurrencySystem().OnCurrencyChange -= ShowCurrency;
+        GameManager.instance.currencySystem.OnCurrencyChange -= ShowCurrency;
     }
 }
