@@ -1,6 +1,6 @@
-using UnityEditor;
 using UnityEngine;
 
+// Resoirces/SettingsAsset.asset - это ScriptableObject, который хранит в себе настройки игры.
 public class SaveSystem: ISaveSystem {
     public SettingsAsset settingsAsset;
 

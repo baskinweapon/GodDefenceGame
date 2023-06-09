@@ -10,7 +10,7 @@ using UnityEngine.Jobs;
 using Random = UnityEngine.Random;
 
 namespace Enemies {
-    public class EnemySpawner : MonoBehaviour {
+    public class EnemySpawnAndMovement : MonoBehaviour {
         public static Action<Transform> OnDeleteEnemy;
         public static Action OnKillAll;
 
@@ -23,8 +23,10 @@ namespace Enemies {
         
         private List<Transform> _enemies = new ();
         TransformAccessArray _transformAccessArray;
+        
         private ObjectPool _objectPool;
 
+        // when we want to change prefab for spawn
         public void ChangePool(int index) {
             _objectPool = objectPools[index];
         }
@@ -41,14 +43,17 @@ namespace Enemies {
             OnKillAll += KillAll;
         }
         
+        /// <summary>
+        /// Create new enemy from random position and add to NativeArray
+        /// </summary>
         private void CreateEnemy() {
             if (_enemies.Count >= 300) return;
             
             _enemies.Add(_objectPool.GetPooledObject().transform);
             _enemies[^1].gameObject.SetActive(true);
-            var sign_1 = Random.value < .5? 1 : -1;
-            var sign_2 = Random.value < .5? 1 : -1;
-            _enemies[^1].position = new Vector3(sign_1 * Random.Range(zoneRange.x, zoneRange.y), 0, sign_2 * Random.Range(zoneRange.x, zoneRange.y));  
+            var sign1 = Random.value < .5? 1 : -1;
+            var sign2 = Random.value < .5? 1 : -1;
+            _enemies[^1].position = new Vector3(sign1 * Random.Range(zoneRange.x, zoneRange.y), 0, sign2 * Random.Range(zoneRange.x, zoneRange.y));  
             _enemies[^1].rotation = Quaternion.LookRotation(pyramidPosition - _enemies[^1].position);
             
             _transformAccessArray.Dispose();
@@ -66,6 +71,7 @@ namespace Enemies {
             _transformAccessArray = new TransformAccessArray(_enemies.ToArray());
         }
 
+        // delete enemy from NativeArray
         private void DeleteEnemy(Transform enemy) {
             _enemies.Remove(enemy);
             
@@ -77,14 +83,16 @@ namespace Enemies {
         public void Update() {
             ChangeSpawnRateATime(Time.deltaTime);
             
+            // direction and speed for each enemy
             NativeArray<Vector3> directions = new NativeArray<Vector3>(_enemies.Count, Allocator.TempJob);
             NativeArray<float> speed = new NativeArray<float>(_enemies.Count, Allocator.TempJob);
             
             for (int i = 0; i < directions.Length; i++) {
-                directions[i] = (pyramidPosition - _enemies[i].position).normalized;
-                speed[i] = Random.Range(1f, 3f);
+                directions[i] = (pyramidPosition - _enemies[i].position).normalized; // set direction to pyramid
+                speed[i] = Random.Range(1f, 3f); // set random speed
             }
             
+            // create job
             ZombieJob zombieJob = new ZombieJob {
                 _speed = speed,
                 _deltaTime = Time.deltaTime,
@@ -98,6 +106,8 @@ namespace Enemies {
             speed.Dispose();
         }
 
+        
+        // we need more enemies
         private float cooldown;
         private int countEnemySpawn;
         private float rate = 20;
@@ -124,13 +134,13 @@ namespace Enemies {
 }
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(EnemySpawner))]
+[CustomEditor(typeof(EnemySpawnAndMovement))]
 public class EnemySpawnerEditor : Editor {
     public override void OnInspectorGUI() {
         base.OnInspectorGUI();
 
         if (GUILayout.Button("Change pool")) {
-            ((EnemySpawner) target).ChangePool(1);
+            ((EnemySpawnAndMovement) target).ChangePool(1);
         }
     }
 }

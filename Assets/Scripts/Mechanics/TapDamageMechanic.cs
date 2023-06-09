@@ -1,11 +1,14 @@
-using System;
 using System.Collections;
 using Enemies;
 using UnityEngine;
 
+/// <summary>
+/// Main mechanic of the game. It allows to damage enemies by tapping on them.
+/// </summary>
 public class TapDamageMechanic: MonoBehaviour {
     public ParticleSystem tapEffect;
     public int damagePower = 1;
+    public float cooldown = 0.5f;
     
     private void Start() {
         GameManager.instance.inputSystem.OnFire += OnFire;
@@ -18,6 +21,7 @@ public class TapDamageMechanic: MonoBehaviour {
     private IEnumerator HoldProcess() {
         var inputSystem = GameManager.instance.inputSystem;
         
+        // if mouse pressed we give more power to the damage
         while (inputSystem.IsPressed()) {
             var ray = GameManager.instance.cameraSystem.GetCamera().ScreenPointToRay(inputSystem.GetMousePosition());
             if (!Physics.Raycast(ray, out var hit)) yield break;
@@ -27,7 +31,7 @@ public class TapDamageMechanic: MonoBehaviour {
                 enemy.Damage(damagePower);
                 PlayEffect(enemy.transform.position);
             }
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(cooldown);
         }
     }
 

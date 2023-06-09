@@ -1,9 +1,9 @@
-using Unity.Collections;
-using Unity.Jobs;
+using Unity.Collections; 
 using UnityEngine;
 using UnityEngine.Jobs;
 
 namespace Enemies {
+    // simple job for moving zombie
     public struct ZombieJob : IJobParallelForTransform {
         public NativeArray<float> _speed;
         public float _deltaTime;

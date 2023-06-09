@@ -1,10 +1,7 @@
-using System.Collections;
-using UnityEngine;
-using UnityEngine.UI;
 
 namespace Enemies {
     
-  
+    // for future use
     public class Zombie : BaseEnemy {
         
     }

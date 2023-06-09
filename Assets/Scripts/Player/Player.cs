@@ -7,7 +7,6 @@ namespace Player {
     public class Player : MonoBehaviour {
         public Slider HealthBar;
         
-
         private void OnEnable() {
             GameManager.instance.OnStartGame += OnStartGame;
             GameManager.instance.OnPlayerPassDamage += PassDamage;
@@ -20,8 +19,8 @@ namespace Player {
             HealthBar.maxValue = GameManager.instance.saveSystem.GetGameSettings().data.player.maxHP;
             HealthBar.value = GameManager.instance.saveSystem.GetGameSettings().data.player.currentHP;
         }
-        
-        public void PassDamage(int damage) {
+
+        private void PassDamage(int damage) {
             GameManager.instance.saveSystem.GetGameSettings().data.player.ChangeCurrentHP(-damage);
             HealthBar.value = GameManager.instance.saveSystem.GetGameSettings().data.player.currentHP;
             if (GameManager.instance.saveSystem.GetGameSettings().data.player.currentHP <= 0) {

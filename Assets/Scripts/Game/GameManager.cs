@@ -52,7 +52,6 @@ public class GameManager : Singleton<GameManager> {
         UIManager.instance.GameOverCanvas.gameObject.SetActive(false);
         sceneManager.LoadScene(1);
         UIManager.instance.HideScreen<StartGameCanvas>();
-        // cameraSystem.ForceCameraPath();
         cameraSystem.TutorCameraPath();
     }
     

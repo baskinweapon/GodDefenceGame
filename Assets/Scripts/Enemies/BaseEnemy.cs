@@ -1,9 +1,9 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Enemies {
+    
     [RequireComponent(typeof(Collider))]
     [RequireComponent(typeof(Rigidbody))]
     public abstract class BaseEnemy : MonoBehaviour {
@@ -30,7 +30,7 @@ namespace Enemies {
         
         protected void OnCollisionEnter(Collision collision) {
             if (collision.gameObject.CompareTag("Player")) {
-                EnemySpawner.OnDeleteEnemy(this.transform);
+                EnemySpawnAndMovement.OnDeleteEnemy(this.transform);
                 animator.SetBool("Attack", true);
                 StartCoroutine(Attack());
             }
@@ -59,7 +59,7 @@ namespace Enemies {
         }
 
         protected virtual void Death() {
-            EnemySpawner.OnDeleteEnemy(this.transform);
+            EnemySpawnAndMovement.OnDeleteEnemy(this.transform);
             GameManager.instance.currencySystem.AddCurrency(deathCost);
             slider.gameObject.SetActive(false);
             animator.SetBool("Attack", false);

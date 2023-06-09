@@ -1,5 +1,3 @@
-using GameFlow;
-using UnityEngine;
 
 namespace UI {
     public class MaxHPUpgrade : UpgradePanel {

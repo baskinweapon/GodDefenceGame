@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +6,7 @@ public class UpgradeData : ScriptableObject {
     public BaseUpgrade prefabUpgrade;
     public int cost;
     public Image image;
-    public string name;
+    public string named;
     public string description;
 
     private BaseUpgrade _upgrade;
